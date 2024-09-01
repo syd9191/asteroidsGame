@@ -41,8 +41,8 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         if (downPressed) playership.moveBackwards();
 
 
-        if (leftPressed) playership.rotate(1);
-        if (rightPressed) playership.rotate(-1);
+        if (leftPressed) playership.rotate(-1);
+        if (rightPressed) playership.rotate(1);
     }
 
     @Override

@@ -23,15 +23,13 @@ public class PlayerShip {
 
         AffineTransform saveAT = g2d.getTransform();
 
-
         g2d.setColor(Color.PINK);
-
 
         g2d.translate(x, y);
         g2d.rotate(angle);
 
-        int[] xPoints = {-size, 0, size};
-        int[] yPoints = {-size, size, -size};
+        int[] xPoints = {-size, -size, size}; // Apex at the top
+        int[] yPoints = {size, -size, 0};
         g2d.fillPolygon(xPoints, yPoints, 3);
 
         g2d.setTransform(saveAT);

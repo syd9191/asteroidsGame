@@ -4,6 +4,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import javax.swing.JPanel;
 
 
@@ -12,6 +15,9 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
     final PlayerShip playership;
     final boolean running;
     private boolean upPressed, downPressed, leftPressed, rightPressed;
+    private List<Asteroid> asteroids;
+    private int asteroidsCap=10;
+    
 
 
     public AsteroidsGame(){
@@ -20,6 +26,11 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         addKeyListener(this);   //this is to listen to inputs
         setFocusable(true);
         running=true;
+        asteroids = new ArrayList<>();
+
+        for (int i=0;i<asteroidsCap;i++){
+            asteroids.add(new Asteroid(800, 600, 20, 10));
+        }
     }
 
     @Override
@@ -43,6 +54,39 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
 
         if (leftPressed) playership.rotate(-1);
         if (rightPressed) playership.rotate(1);
+
+
+        List<Asteroid> toRemove=new ArrayList<>();
+
+        for (Asteroid existingAsteroid: asteroids) {
+            existingAsteroid.update();
+            if (existingAsteroid.outOfBoundsCheck()) {
+                toRemove.add(existingAsteroid); // Respawn a new asteroid
+            }
+        }
+
+        asteroids.removeAll(toRemove);
+
+        //We should cap the asteroids at 10, too many damn hard to play
+        if (toRemove.size()<=asteroidsCap){
+            addNewAsteroids();
+
+        }
+    }
+
+    private void addNewAsteroids() {
+        // Example: Add a new asteroid with some probability or logic
+        Random rand = new Random();
+        int decidingFactor=rand.nextInt(100);
+        if (decidingFactor>0&&decidingFactor<2){
+            asteroids.add(new Asteroid(800, 600, 40, 2));
+        }
+        else if (decidingFactor>=2&&decidingFactor<5){
+            asteroids.add(new Asteroid(800, 600, 20, 4));
+        }
+        else if (decidingFactor>=4&&decidingFactor<9){
+            asteroids.add(new Asteroid(800, 600, 10, 8));
+        }
     }
 
     @Override
@@ -76,6 +120,10 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
         playership.draw(g);
+
+        for (Asteroid asteroid : asteroids) {
+            asteroid.draw(g);
+        }
     }
 
     

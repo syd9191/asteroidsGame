@@ -29,8 +29,7 @@ public class PlayerShip {
             g2d.setColor(Color.WHITE);
         }
         else{
-            System.out.println("hello");
-            g2d.setColor(Color.RED);
+            g2d.setColor(Color.PINK);
         }
 
         g2d.translate(x, y);

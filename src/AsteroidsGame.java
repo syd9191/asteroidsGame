@@ -11,45 +11,52 @@ import javax.swing.JPanel;
 
 
 public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
+    final boolean running;
     final PlayerShip playership;
+
     final int asteroidsCap=10;
     final int bulletFireRate=15;
     final int invulTimer=100;
+    final int screenWidth=800;
+    final int screenHeight=600;
 
+    final List<Asteroid> asteroids;
+    final List<Bullet> bullets;
+    final List<Asteroid> toRemoveAsteroids;
+    final List<Bullet> toRemoveBullets;
 
     private int lives=5;
     private int bulletCountdown=0;
     private int invulCountdown=0;
+    
+    final Score score;
 
     private boolean upPressed, downPressed, leftPressed, rightPressed, spacePressed;
-    final boolean running;
-
-    private List<Asteroid> asteroids;
-    private List<Bullet> bullets;
-    
-    
-
 
     public AsteroidsGame(){
-        playership=new PlayerShip(400,300); //start new playership in the centre of the screen
-        setPreferredSize(new Dimension(800, 600));
+        setPreferredSize(new Dimension(screenWidth, screenHeight));
         addKeyListener(this);   //this is to listen to inputs
         setFocusable(true);
         running=true;
+
+        playership=new PlayerShip(screenWidth/2,screenHeight/2); //start new playership in the centre of the screen
         asteroids = new ArrayList<>();
         bullets= new ArrayList<>();
-        
+        toRemoveAsteroids= new ArrayList<>();
+        toRemoveBullets= new ArrayList<>();
+        score= new Score(screenWidth, screenHeight);
 
-
+    
         for (int i=0;i<asteroidsCap;i++){
-            asteroids.add(new Asteroid(800, 600, 20, 10));
+            asteroids.add(new Asteroid(screenWidth, screenHeight, 20, 10));
         }
     }
 
     @Override
     public void run(){
         while (running){
-            update();
+            updatePlayer();
+            updateObjects();
             repaint();
             try {
                 Thread.sleep(16);
@@ -61,49 +68,41 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
     }
 
     public void update(){
+        updatePlayer();
+        updateObjects();
+    }
+
+    private void updatePlayer(){
         if (upPressed) playership.moveForward();
         if (downPressed) playership.moveBackwards();
-
-
         if (leftPressed) playership.rotate(-1);
         if (rightPressed) playership.rotate(1);
+        if (playership.isInvulnerable()&&invulCountdown>0){
+            invulCountdown--;
+        }     
+        if (invulCountdown<=0){
+            playership.makeVulnerable();
+        }
+    }
 
+    private void updateObjects(){
         if (bulletCountdown>0){
             bulletCountdown--;
         }
 
-        if (playership.isInvulnerable()&&invulCountdown>0){
-            invulCountdown--;
-        }     
-
-        if (invulCountdown<=0){
-            playership.makeVulnerable();
-        }
-
-
-
         if (spacePressed&&bulletCountdown==0){
-            bullets.add(new Bullet(playership.getX(), playership.getY(), playership.getAngle()));
+            bullets.add(new Bullet(playership.getX(), 
+                        playership.getY(), 
+                        playership.getAngle()));
             bulletCountdown=bulletFireRate;
         } 
-        
-        List<Asteroid> toRemoveAsteroids=new ArrayList<>();
-        List<Bullet> toRemoveBullets=new ArrayList<>();
-
 
         for (Asteroid existingAsteroid: asteroids){
-            if (playership.checkCollision(existingAsteroid)){
-                if (playership.isInvulnerable()==false){
-                    lives--;
-                    playership.makeInvulnerable();
-                    invulCountdown=invulTimer;
-                }
-            }
+            playerCollisionWithAsteroid(existingAsteroid);
             existingAsteroid.update();
             if (existingAsteroid.outOfBoundsCheck()) {
                 toRemoveAsteroids.add(existingAsteroid); // Respawn a new asteroid
             }
-        
         }
 
         for (Bullet existingBullet:bullets){
@@ -112,10 +111,7 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
                 toRemoveBullets.add(existingBullet);
             }
             for (Asteroid existingAsteroid: asteroids){
-                if (existingBullet.checkCollision(existingAsteroid)){
-                    toRemoveBullets.add(existingBullet);
-                    toRemoveAsteroids.add(existingAsteroid);
-                }
+                bulletCollisionWithAsteroid(existingAsteroid, existingBullet, score);
             }
         }
         bullets.removeAll(toRemoveBullets);
@@ -127,20 +123,26 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    private void updatePlayer(){
-        if (upPressed) playership.moveForward();
-        if (downPressed) playership.moveBackwards();
-        if (leftPressed) playership.rotate(-1);
-        if (rightPressed) playership.rotate(1);
-
-        if (playership.isInvulnerable()&&invulCountdown>0){
-            invulCountdown--;
-        }     
-
-        if (invulCountdown<=0){
-            playership.makeVulnerable();
+    private void playerCollisionWithAsteroid(Asteroid existingAsteroid){
+        if (playership.checkCollision(existingAsteroid)){
+            if (playership.isInvulnerable()==false){
+                playerHit();
+            }
         }
+    }
 
+    private void bulletCollisionWithAsteroid(Asteroid existingAsteroid, Bullet existingBullet, Score score){
+        if (existingBullet.checkCollision(existingAsteroid)){
+            toRemoveBullets.add(existingBullet);
+            toRemoveAsteroids.add(existingAsteroid);
+            score.destroyAsteroid();
+        }
+    }
+
+    private void playerHit(){
+        lives--;
+        playership.makeInvulnerable();
+        invulCountdown=invulTimer;
     }
 
     private void addNewAsteroids() {
@@ -148,13 +150,13 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         Random rand = new Random();
         int decidingFactor=rand.nextInt(100);
         if (decidingFactor>0&&decidingFactor<2){
-            asteroids.add(new Asteroid(800, 600, 80, 2));
+            asteroids.add(new Asteroid(screenWidth, screenHeight, 80, 2));
         }
         else if (decidingFactor>=2&&decidingFactor<5){
-            asteroids.add(new Asteroid(800, 600, 40, 4));
+            asteroids.add(new Asteroid(screenWidth, screenHeight, 40, 4));
         }
         else if (decidingFactor>=4&&decidingFactor<9){
-            asteroids.add(new Asteroid(800, 600, 20, 8));
+            asteroids.add(new Asteroid(screenWidth, screenHeight, 20, 8));
         }
     }
 
@@ -181,18 +183,18 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         }
     }
 
-
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
-        playership.draw(g);
 
+
+        playership.draw(g);
+        score.draw(g);
         for (Asteroid asteroid : asteroids) {
             asteroid.draw(g);
         }
-
         for (Bullet bullet : bullets) {
             bullet.draw(g);
         }

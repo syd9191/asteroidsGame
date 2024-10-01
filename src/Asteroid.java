@@ -40,7 +40,7 @@ public class Asteroid {
 
     public void draw(Graphics g){
         g.setColor(Color.gray);
-        g.fillOval(x,y,size,size); //oval with height=width to make circle
+        g.fillOval(x-size/2,y-size/2,size,size); //oval with height=width to make circle
     }
 
 
@@ -55,6 +55,18 @@ public class Asteroid {
             return true;
         }
         return false;
+    }
+
+    public int getX(){
+        return x;
+    }
+
+    public int getY(){
+        return y;
+    }
+
+    public int getSize(){
+        return size;
     }
 
 }

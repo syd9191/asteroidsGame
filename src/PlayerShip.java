@@ -61,4 +61,44 @@ public class PlayerShip {
         if (y<-size) y=screenHeight+size;
         if (y>screenWidth+size) y=-size;
     }
+
+    public double[][] getVertices(){
+        double[][] vertices = new double[3][2];
+        vertices[0][0] = x + size * Math.cos(angle); 
+        vertices[0][1] = y + size * Math.sin(angle); 
+        vertices[1][0] = x + size * Math.cos(angle + 2 * Math.PI / 3); 
+        vertices[1][1] = y + size * Math.sin(angle + 2 * Math.PI / 3); 
+        vertices[2][0] = x + size * Math.cos(angle + 4 * Math.PI / 3);
+        vertices[2][1] = y + size * Math.sin(angle + 4 * Math.PI / 3); 
+        return vertices;
+    }
+
+    public boolean checkCollision(Asteroid asteroid) {
+        double[][] vertices = getVertices();
+        int asteroidRadius = asteroid.getSize() / 2;
+
+        for (int i = 0; i < vertices.length; i++) {
+            double xDist = vertices[i][0] - asteroid.getX();
+            double yDist = vertices[i][1] - asteroid.getY();
+            double distanceSquared = xDist * xDist + yDist * yDist;
+
+            if (distanceSquared < asteroidRadius * asteroidRadius) {
+                return true;
+            }
+        }
+
+        return false; // No collision
+    }
+
+    public int getX(){
+        return x;
+    }
+
+    public int getY(){
+        return y;
+    }
+
+    public double getAngle(){
+        return angle;
+    }
 }

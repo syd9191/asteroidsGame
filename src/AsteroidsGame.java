@@ -11,14 +11,15 @@ import javax.swing.JPanel;
 
 
 public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
-
     final PlayerShip playership;
     final int asteroidsCap=10;
     final int bulletFireRate=15;
+    final int invulTimer=100;
 
 
     private int lives=5;
     private int bulletCountdown=0;
+    private int invulCountdown=0;
 
     private boolean upPressed, downPressed, leftPressed, rightPressed, spacePressed;
     final boolean running;
@@ -71,6 +72,16 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
             bulletCountdown--;
         }
 
+        if (playership.isInvulnerable()&&invulCountdown>0){
+            invulCountdown--;
+        }     
+
+        if (invulCountdown<=0){
+            playership.makeVulnerable();
+        }
+
+
+
         if (spacePressed&&bulletCountdown==0){
             bullets.add(new Bullet(playership.getX(), playership.getY(), playership.getAngle()));
             bulletCountdown=bulletFireRate;
@@ -82,7 +93,11 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
 
         for (Asteroid existingAsteroid: asteroids){
             if (playership.checkCollision(existingAsteroid)){
-                lives--;
+                if (playership.isInvulnerable()==false){
+                    lives--;
+                    playership.makeInvulnerable();
+                    invulCountdown=invulTimer;
+                }
             }
             existingAsteroid.update();
             if (existingAsteroid.outOfBoundsCheck()) {
@@ -110,6 +125,22 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         if (asteroids.size()<=asteroidsCap){
             addNewAsteroids();
         }
+    }
+
+    private void updatePlayer(){
+        if (upPressed) playership.moveForward();
+        if (downPressed) playership.moveBackwards();
+        if (leftPressed) playership.rotate(-1);
+        if (rightPressed) playership.rotate(1);
+
+        if (playership.isInvulnerable()&&invulCountdown>0){
+            invulCountdown--;
+        }     
+
+        if (invulCountdown<=0){
+            playership.makeVulnerable();
+        }
+
     }
 
     private void addNewAsteroids() {
@@ -150,10 +181,6 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    @Override
-    public void keyTyped(KeyEvent e){
-
-    }
 
     @Override
     protected void paintComponent(Graphics g){
@@ -173,6 +200,10 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         g.setColor(Color.white);
         g.drawString("Lives: " + lives, 10, 20);
 
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e){
     }
 
     

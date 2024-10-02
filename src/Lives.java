@@ -24,7 +24,7 @@ public class Lives {
     }
 
     public void draw(Graphics g){
-        g.setColor(Color.WHITE);
+        g.setColor(Color.CYAN);
         g.drawString("Lives: " + lives, 10, 20);
     }
 

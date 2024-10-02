@@ -195,17 +195,16 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-
-        playership.draw(g);
-        score.draw(g);
-        lives.draw(g);
-
         for (Asteroid asteroid : asteroids) {
             asteroid.draw(g);
         }
         for (Bullet bullet : bullets) {
             bullet.draw(g);
         }
+
+        playership.draw(g); //this order of asteroid and bullets then playership score and lives MUST BE MAINTAINED for right layering
+        score.draw(g);
+        lives.draw(g);
     }
 
     @Override

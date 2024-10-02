@@ -13,6 +13,9 @@ import javax.swing.JPanel;
 public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
     final boolean running;
     final PlayerShip playership;
+    final Score score;
+    final Lives lives;
+
 
     final int asteroidsCap=10;
     final int bulletFireRate=15;
@@ -25,11 +28,11 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
     final List<Asteroid> toRemoveAsteroids;
     final List<Bullet> toRemoveBullets;
 
-    private int lives=5;
+
     private int bulletCountdown=0;
     private int invulCountdown=0;
     
-    final Score score;
+
 
     private boolean upPressed, downPressed, leftPressed, rightPressed, spacePressed;
 
@@ -39,12 +42,15 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         setFocusable(true);
         running=true;
 
-        playership=new PlayerShip(screenWidth/2,screenHeight/2); //start new playership in the centre of the screen
         asteroids = new ArrayList<>();
         bullets= new ArrayList<>();
         toRemoveAsteroids= new ArrayList<>();
         toRemoveBullets= new ArrayList<>();
+
+        playership=new PlayerShip(screenWidth/2,screenHeight/2);
         score= new Score(screenWidth, screenHeight);
+        lives= new Lives(5, screenWidth, screenHeight);
+
 
     
         for (int i=0;i<asteroidsCap;i++){
@@ -140,7 +146,7 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
     }
 
     private void playerHit(){
-        lives--;
+        lives.deduct();
         playership.makeInvulnerable();
         invulCountdown=invulTimer;
     }
@@ -192,16 +198,14 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
 
         playership.draw(g);
         score.draw(g);
+        lives.draw(g);
+
         for (Asteroid asteroid : asteroids) {
             asteroid.draw(g);
         }
         for (Bullet bullet : bullets) {
             bullet.draw(g);
         }
-        
-        g.setColor(Color.white);
-        g.drawString("Lives: " + lives, 10, 20);
-
     }
 
     @Override

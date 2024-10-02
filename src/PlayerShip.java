@@ -9,7 +9,10 @@ public class PlayerShip {
     final int size=10;
     final int speed=5;
     final double rotationSpeed=Math.toRadians(5);
-    double angle=0;
+
+
+    private boolean invulnerable=false;
+    private double angle=0;
     
 
 
@@ -22,8 +25,12 @@ public class PlayerShip {
         Graphics2D g2d= (Graphics2D) g;
 
         AffineTransform saveAT = g2d.getTransform();
-
-        g2d.setColor(Color.PINK);
+        if (invulnerable==false){
+            g2d.setColor(Color.WHITE);
+        }
+        else{
+            g2d.setColor(Color.PINK);
+        }
 
         g2d.translate(x, y);
         g2d.rotate(angle);
@@ -31,7 +38,6 @@ public class PlayerShip {
         int[] xPoints = {-size, -size, size}; // Apex at the top
         int[] yPoints = {size, -size, 0};
         g2d.fillPolygon(xPoints, yPoints, 3);
-
         g2d.setTransform(saveAT);
     }
 
@@ -90,6 +96,14 @@ public class PlayerShip {
         return false; // No collision
     }
 
+    public void makeInvulnerable(){
+        invulnerable=true;
+    }
+
+    public void makeVulnerable(){
+        invulnerable=false;
+    }
+
     public int getX(){
         return x;
     }
@@ -101,4 +115,10 @@ public class PlayerShip {
     public double getAngle(){
         return angle;
     }
+
+    public boolean isInvulnerable(){
+        return invulnerable;
+    }
+
+    
 }

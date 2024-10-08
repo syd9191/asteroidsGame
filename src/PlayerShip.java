@@ -11,12 +11,11 @@ import javax.imageio.ImageIO;
 
 
 public class PlayerShip {
-    private int x, y;
     final int size=35;
     final int speed=5;
     final double rotationSpeed=Math.toRadians(320);
 
-
+    private int x, y;
     private boolean invulnerable=false;
     private double angle=Math.toRadians(0);
     
@@ -24,9 +23,9 @@ public class PlayerShip {
     private BufferedImage woundedPlayerShipImage;
 
 
-    public PlayerShip(int startX, int startY){
-        this.x=startX;
-        this.y=startY;
+    public PlayerShip(int x, int y){
+        this.x=x;
+        this.y=y;
 
         try {
             playerShipImage=ImageIO.read(new File("data/pixelShip.png"));

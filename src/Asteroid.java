@@ -12,12 +12,13 @@ import javax.imageio.ImageIO;
 
 public class Asteroid {
     final double angle;
+    final int side;
 
     BufferedImage asteroidImage;
 
     private int x,y;
     private int speed;
-    private  int size;
+    private int size;
 
     
     Random rand=new Random();
@@ -33,9 +34,11 @@ public class Asteroid {
             e.printStackTrace();
         }
 
+        side=rand.nextInt(0,4); //randomise which side the asteroid spawns
         angle = Math.toRadians(rand.nextInt(360));
-        int side=rand.nextInt(0,3); //randomise which side the asteroid spawns
-        switch (side){
+        
+        
+        switch(side){
             case 0: 
                 x=-size;
                 y=rand.nextInt(screenHeight);
@@ -45,12 +48,12 @@ public class Asteroid {
                 y=-size;
                 break;
             case 2:
-                x=screenWidth;
+                x=screenWidth+size;
                 y=rand.nextInt(screenHeight);
                 break;
             case 3:
                 x=rand.nextInt(screenWidth);
-                y=screenHeight;
+                y=screenHeight+size;
                 break;
         }
     }
@@ -63,7 +66,7 @@ public class Asteroid {
 
     public void update(){
         x+=Math.cos(angle)*speed;
-        y+=Math.sin(angle)*speed;    
+        y+=Math.sin(angle)*speed;
     }
     
     public BufferedImage resizeImage(BufferedImage image){

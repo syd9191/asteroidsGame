@@ -28,9 +28,9 @@ public class PlayerShip {
         this.y=y;
 
         try {
-            playerShipImage=ImageIO.read(new File("data/pixelShip.png"));
+            playerShipImage=ImageIO.read(new File("data/images/pixelShip.png"));
             playerShipImage=resizeImage(playerShipImage);
-            woundedPlayerShipImage=ImageIO.read(new File("data/woundedPixelShip.png"));
+            woundedPlayerShipImage=ImageIO.read(new File("data/images/woundedPixelShip.png"));
             woundedPlayerShipImage=resizeImage(woundedPlayerShipImage);
 
         } catch (IOException e) {

@@ -24,7 +24,7 @@ public class Lives {
         this.screenWidth=screenWidth;
 
         try{
-            heartImage= ImageIO.read(new File("data/heart.png"));
+            heartImage= ImageIO.read(new File("data/images/heart.png"));
             resizedImage=resizeImage(heartImage, 30, 30);
         }catch (IOException e){
             e.printStackTrace();

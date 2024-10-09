@@ -1,5 +1,5 @@
-package src;
 import javax.swing.JFrame;
+import src.AsteroidsGame;
 
 public class Main {
     public static void main(String[] args){

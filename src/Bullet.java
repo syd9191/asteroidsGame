@@ -6,7 +6,7 @@ import java.awt.Graphics;
 public class Bullet{
     private int x,y;
     private double angle;
-    private int speed=12;
+    final int speed=12;
     final int size=3;
 
 

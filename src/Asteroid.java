@@ -29,7 +29,7 @@ public class Asteroid {
         speed=speedArg;
 
         try {
-            asteroidImage= ImageIO.read(new File("data/Asteroid Brown.png"));
+            asteroidImage= ImageIO.read(new File("data/images/Asteroid Brown.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

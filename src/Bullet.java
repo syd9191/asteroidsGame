@@ -18,8 +18,8 @@ public class Bullet{
     }
 
     public void update(){
-        x+=Math.cos(angle)*speed;
-        y+=Math.sin(angle)*speed;
+        x+=Math.sin(Math.toRadians(angle))*speed;
+        y-=Math.cos(Math.toRadians(angle))*speed;
     }
 
     public void draw(Graphics g){

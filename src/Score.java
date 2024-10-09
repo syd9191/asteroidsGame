@@ -24,10 +24,6 @@ public class Score {
 
     public void draw(Graphics g){
         g.setColor(Color.CYAN);
-        g.drawString("Score: " + getScore(), screenWidth-60 , 20);
+        g.drawString("Score: " + getScore(), screenWidth-100 , 40);
     }
-
-
-
-    
 }

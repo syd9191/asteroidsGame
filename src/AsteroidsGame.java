@@ -52,10 +52,6 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         lives= new Lives(5, screenWidth, screenHeight);
 
 
-    
-        for (int i=0;i<asteroidsCap;i++){
-            asteroids.add(new Asteroid(screenWidth, screenHeight, 20, 10));
-        }
     }
 
     @Override
@@ -156,13 +152,13 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         Random rand = new Random();
         int decidingFactor=rand.nextInt(100);
         if (decidingFactor>0&&decidingFactor<2){
-            asteroids.add(new Asteroid(screenWidth, screenHeight, 80, 2));
+            asteroids.add(new Asteroid(screenWidth, screenHeight, 150, 2));
         }
         else if (decidingFactor>=2&&decidingFactor<5){
-            asteroids.add(new Asteroid(screenWidth, screenHeight, 40, 4));
+            asteroids.add(new Asteroid(screenWidth, screenHeight, 100, 4));
         }
         else if (decidingFactor>=4&&decidingFactor<9){
-            asteroids.add(new Asteroid(screenWidth, screenHeight, 20, 8));
+            asteroids.add(new Asteroid(screenWidth, screenHeight, 50, 6));
         }
     }
 

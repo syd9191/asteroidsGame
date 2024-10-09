@@ -14,6 +14,7 @@ public class PlayerShip {
     final int size=35;
     final int speed=5;
     final double rotationSpeed=Math.toRadians(320);
+    final double spriteHitboxScale=0.9;
 
     private int x, y;
     private boolean invulnerable=false;
@@ -104,14 +105,13 @@ public class PlayerShip {
     }
 
     public double[][] getVertices(){
-        double scaledsize=0.7; //play tested hitbox with with png sprite
         double[][] vertices = new double[3][2];
-        vertices[0][0] = x + scaledsize * size * Math.sin(Math.toRadians(angle)); 
-        vertices[0][1] = y - scaledsize * size * Math.cos(Math.toRadians(angle)); 
-        vertices[1][0] = x + scaledsize * size * Math.sin(Math.toRadians(angle + 120)); 
-        vertices[1][1] = y - scaledsize * size * Math.cos(Math.toRadians(angle + 120)); 
-        vertices[2][0] = x + scaledsize * size * Math.sin(Math.toRadians(angle + 240));
-        vertices[2][1] = y - scaledsize * size * Math.cos(Math.toRadians(angle + 240)); 
+        vertices[0][0] = x + spriteHitboxScale * size * Math.sin(Math.toRadians(angle)); 
+        vertices[0][1] = y - spriteHitboxScale * size * Math.cos(Math.toRadians(angle)); 
+        vertices[1][0] = x + spriteHitboxScale * size * Math.sin(Math.toRadians(angle + 120)); 
+        vertices[1][1] = y - spriteHitboxScale * size * Math.cos(Math.toRadians(angle + 120)); 
+        vertices[2][0] = x + spriteHitboxScale * size * Math.sin(Math.toRadians(angle + 240));
+        vertices[2][1] = y - spriteHitboxScale * size * Math.cos(Math.toRadians(angle + 240)); 
         return vertices;
     }
 

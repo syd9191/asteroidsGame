@@ -58,8 +58,6 @@ public class PlayerShip {
         }else{
             g.drawImage(woundedPlayerShipImage, -size, -size, 2 * size, 2 * size, null);
         }
-        
-
         g2d.setTransform(saveAT);
     }
 
@@ -128,7 +126,6 @@ public class PlayerShip {
                 return true;
             }
         }
-
         return false; // No collision
     }
 

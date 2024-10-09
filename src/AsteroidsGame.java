@@ -16,7 +16,6 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
     final Score score;
     final Lives lives;
 
-
     final int asteroidsCap=10;
     final int bulletFireRate=15;
     final int invulTimer=100;
@@ -28,30 +27,23 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
     final List<Asteroid> toRemoveAsteroids;
     final List<Bullet> toRemoveBullets;
 
-
     private int bulletCountdown=0;
     private int invulCountdown=0;
-    
-
-
     private boolean upPressed, downPressed, leftPressed, rightPressed, spacePressed;
 
     public AsteroidsGame(){
-        setPreferredSize(new Dimension(screenWidth, screenHeight));
-        addKeyListener(this);   //this is to listen to inputs
-        setFocusable(true);
         running=true;
-
         asteroids = new ArrayList<>();
         bullets= new ArrayList<>();
         toRemoveAsteroids= new ArrayList<>();
         toRemoveBullets= new ArrayList<>();
-
         playership=new PlayerShip(screenWidth/2,screenHeight/2);
         score= new Score(screenWidth, screenHeight);
         lives= new Lives(5, screenWidth, screenHeight);
 
-
+        setPreferredSize(new Dimension(screenWidth, screenHeight));
+        addKeyListener(this); 
+        setFocusable(true);
     }
 
     @Override

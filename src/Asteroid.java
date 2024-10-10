@@ -91,7 +91,7 @@ public class Asteroid {
         BufferedImage newImage= resizeImage(asteroidImage);
         g.drawImage(newImage, x-size/2, y-size/2, null);
         g.setColor(Color.CYAN);
-        g.drawOval(x-size/2, y-size/2, size, size);
+        //g.drawOval(x-size/2, y-size/2, size, size); for future hitbox testing
     }
 
 

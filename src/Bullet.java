@@ -9,8 +9,6 @@ public class Bullet{
     final int speed=12;
     final int size=3;
 
-
-
     public Bullet(int x, int y, double shipAngle){
         this.x=x;
         this.y=y;
@@ -44,9 +42,4 @@ public class Bullet{
 
     public int getX() { return x; }
     public int getY() { return y; }
-
-
-
-
-    
 }

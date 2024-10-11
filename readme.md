@@ -11,7 +11,7 @@ This is a simple Java-based version of the classic game **Asteroids**. Control y
 Clone this repository or download the source files.
 
 ```bash
-git clone [<repository-link>](https://github.com/syd9191/asteroidsGame.git)
+git clone https://github.com/syd9191/asteroidsGame.git
 ```
 ### 2. Open the Project in an IDE
 Open the project in a Java-compatible IDE like IntelliJ IDEA, Eclipse, or Visual Studio Code.

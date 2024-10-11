@@ -40,6 +40,14 @@ public class Lives {
         return resizedImage;
     }
 
+    public void draw(Graphics g){
+        g.setColor(Color.CYAN);
+
+        for (int numHearts=0; numHearts<lives; numHearts++){
+            g.drawImage(resizedImage, 20+numHearts*40 , 20, null);
+        }
+    }
+
     public int getLives(){
         return lives;
     }
@@ -48,14 +56,6 @@ public class Lives {
         lives--;
     }
 
-    public void draw(Graphics g){
-        g.setColor(Color.CYAN);
-
-        for (int numHearts=0; numHearts<lives; numHearts++){
-            g.drawImage(resizedImage, 20+numHearts*40 , 20, null);
-        }
-        
-    }
 
 
 

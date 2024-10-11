@@ -87,22 +87,19 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         if (bulletCountdown>0){
             bulletCountdown--;
         }
+        shoot();
+        asteroidCollisions();
+        bulletCollisions();
+        asteroidSplitting();
+        asteoroidsCleaning();
 
-        if (spacePressed&&bulletCountdown==0){
-            bullets.add(new Bullet(playership.getX(), 
-                        playership.getY(), 
-                        playership.getAngle()));
-            bulletCountdown=bulletFireRate;
-        } 
-
-        for (Asteroid existingAsteroid: asteroids){
-            playerCollisionWithAsteroid(existingAsteroid);
-            existingAsteroid.update();
-            if (existingAsteroid.outOfBoundsCheck()) {
-                toRemoveAsteroidsOOB.add(existingAsteroid); // Respawn a new asteroid
-            }
+        if (asteroids.size()<=asteroidsCap){
+            addNewAsteroids();
         }
+    
+    }
 
+    private void bulletCollisions(){
         for (Bullet existingBullet:bullets){
             existingBullet.update();
             if (existingBullet.outOfBoundsCheck()){
@@ -112,7 +109,30 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
                 bulletCollisionWithAsteroid(existingAsteroid, existingBullet, score);
             }
         }
+    }
 
+    private void asteroidCollisions(){
+        for (Asteroid existingAsteroid: asteroids){
+            playerCollisionWithAsteroid(existingAsteroid);
+            existingAsteroid.update();
+            if (existingAsteroid.outOfBoundsCheck()) {
+                toRemoveAsteroidsOOB.add(existingAsteroid); // Respawn a new asteroid
+            }
+        }
+    }
+
+    private void shoot(){
+        //shooting logic
+        if (spacePressed&&bulletCountdown==0){
+            bullets.add(new Bullet(playership.getX(), 
+                        playership.getY(), 
+                        playership.getAngle()));
+            bulletCountdown=bulletFireRate;
+        } 
+    }
+
+    private void asteroidSplitting(){
+        //splitting mechanic for asteroids, does not return anything
         for (Asteroid destroyedAsteroid: toRemoveAsteroids){
             int asteroidType=destroyedAsteroid.getType();
             int counter=0;
@@ -133,7 +153,9 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
                 toAddAsteroids.add(splitAsteroid);
             }
         }
+    }
 
+    private void asteoroidsCleaning(){
         asteroids.addAll(toAddAsteroids);
         toAddAsteroids.clear();
 
@@ -145,11 +167,6 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
 
         asteroids.removeAll(toRemoveAsteroids);
         toRemoveAsteroids.clear();
-
-        //We should cap the asteroids at 10, too many damn hard to play
-        if (asteroids.size()<=asteroidsCap){
-            addNewAsteroids();
-        }
     }
 
     private void playerCollisionWithAsteroid(Asteroid existingAsteroid){

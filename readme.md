@@ -3,6 +3,8 @@
 ## Overview
 This is a simple Java-based version of the classic game **Asteroids**. Control your spaceship, shoot asteroids, and avoid collisions. The game features shooting mechanics, asteroid splitting, and a lives/score system.
 
+![image](data/images/asteroids.png)
+
 ## How to Set Up and Run the Game
 
 ### 1. Clone the Repository

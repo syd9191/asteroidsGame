@@ -11,10 +11,10 @@ import javax.swing.JPanel;
 
 
 public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
-    final boolean running;
     final PlayerShip playership;
     final Score score;
     final Lives lives;
+    final GameOver gameOver;
 
     final int asteroidsCap=15;
     final int bulletFireRate=15;
@@ -31,7 +31,7 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
 
     private int bulletCountdown=0;
     private int invulCountdown=0;
-    private boolean upPressed, downPressed, leftPressed, rightPressed, spacePressed;
+    private boolean upPressed, downPressed, leftPressed, rightPressed, spacePressed, running;
 
     public AsteroidsGame(){
         running=true;
@@ -44,6 +44,7 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         playership=new PlayerShip(screenWidth/2,screenHeight/2);
         score= new Score(screenWidth, screenHeight);
         lives= new Lives(5, screenWidth, screenHeight);
+        gameOver= new GameOver(screenWidth, screenHeight);
 
         setPreferredSize(new Dimension(screenWidth, screenHeight));
         addKeyListener(this); 
@@ -56,6 +57,7 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
             updatePlayer();
             updateObjects();
             repaint();
+            gameOver();
             try {
                 Thread.sleep(16);
             } 
@@ -96,8 +98,14 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         if (asteroids.size()<=asteroidsCap){
             addNewAsteroids();
         }
-    
     }
+
+    private void gameOver(){
+        if (lives.getLives()==0){
+            running=false;
+        }
+    }
+
 
     private void bulletCollisions(){
         for (Bullet existingBullet:bullets){
@@ -243,8 +251,13 @@ public class AsteroidsGame extends JPanel implements Runnable, KeyListener {
         }
 
         playership.draw(g); //this order of asteroid and bullets then playership score and lives MUST BE MAINTAINED for right layering
-        score.draw(g);
         lives.draw(g);
+        if (lives.getLives()==0){
+            gameOver.draw(g, score.getScore());
+            return;
+        }
+        score.draw(g);
+        
     }
 
     @Override

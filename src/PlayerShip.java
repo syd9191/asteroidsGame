@@ -1,6 +1,5 @@
 package src;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -17,8 +16,8 @@ public class PlayerShip {
     final double spriteHitboxScale=0.9;
 
     private int x, y;
-    private boolean invulnerable=false;
     private double angle=Math.toRadians(0);
+    private boolean invulnerable=false;
     
     private BufferedImage playerShipImage;
     private BufferedImage woundedPlayerShipImage;
@@ -29,10 +28,8 @@ public class PlayerShip {
         this.y=y;
 
         try {
-            playerShipImage=ImageIO.read(new File("data/images/pixelShip.png"));
-            playerShipImage=resizeImage(playerShipImage);
-            woundedPlayerShipImage=ImageIO.read(new File("data/images/woundedPixelShip.png"));
-            woundedPlayerShipImage=resizeImage(woundedPlayerShipImage);
+            playerShipImage=resizeImage(ImageIO.read(new File("data/images/pixelShip.png")));
+            woundedPlayerShipImage=resizeImage(ImageIO.read(new File("data/images/woundedPixelShip.png")));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,15 +38,7 @@ public class PlayerShip {
 
     public void draw(Graphics g){
         Graphics2D g2d= (Graphics2D) g;
-
         AffineTransform saveAT = g2d.getTransform();
-        if (invulnerable==false){
-            g2d.setColor(Color.WHITE);
-        }
-        else{
-            g2d.setColor(Color.PINK);
-        }
-
         g2d.translate(x, y);
         g2d.rotate(Math.toRadians(angle));
         
@@ -62,6 +51,7 @@ public class PlayerShip {
     }
 
     public void drawHitbox(Graphics g){
+        //used only for testing
         double[][] vertices = getVertices();
 
         int[] xPoints = new int[3];
@@ -91,26 +81,11 @@ public class PlayerShip {
         keepWithinBounds(800, 600);
     }
 
-    public int test(int a) {
-        return a;
-    }
-
     public void keepWithinBounds(int screenWidth, int screenHeight){
         if (x<-size) x=screenWidth+size;
         if (x>screenWidth+size) x=-size;
         if (y<-size) y=screenHeight+size;
         if (y>screenWidth+size) y=-size;
-    }
-
-    public double[][] getVertices(){
-        double[][] vertices = new double[3][2];
-        vertices[0][0] = x + spriteHitboxScale * size * Math.sin(Math.toRadians(angle)); 
-        vertices[0][1] = y - spriteHitboxScale * size * Math.cos(Math.toRadians(angle)); 
-        vertices[1][0] = x + spriteHitboxScale * size * Math.sin(Math.toRadians(angle + 120)); 
-        vertices[1][1] = y - spriteHitboxScale * size * Math.cos(Math.toRadians(angle + 120)); 
-        vertices[2][0] = x + spriteHitboxScale * size * Math.sin(Math.toRadians(angle + 240));
-        vertices[2][1] = y - spriteHitboxScale * size * Math.cos(Math.toRadians(angle + 240)); 
-        return vertices;
     }
 
     public boolean checkCollision(Asteroid asteroid) {
@@ -145,6 +120,22 @@ public class PlayerShip {
         invulnerable=false;
     }
 
+    public boolean isInvulnerable(){
+        return invulnerable;
+    }
+
+    public double[][] getVertices(){
+        double[][] vertices = new double[3][2];
+        vertices[0][0] = x + spriteHitboxScale * size * Math.sin(Math.toRadians(angle)); 
+        vertices[0][1] = y - spriteHitboxScale * size * Math.cos(Math.toRadians(angle)); 
+        vertices[1][0] = x + spriteHitboxScale * size * Math.sin(Math.toRadians(angle + 120)); 
+        vertices[1][1] = y - spriteHitboxScale * size * Math.cos(Math.toRadians(angle + 120)); 
+        vertices[2][0] = x + spriteHitboxScale * size * Math.sin(Math.toRadians(angle + 240));
+        vertices[2][1] = y - spriteHitboxScale * size * Math.cos(Math.toRadians(angle + 240)); 
+        return vertices;
+    }
+
+
     public int getX(){
         return x;
     }
@@ -157,9 +148,6 @@ public class PlayerShip {
         return angle;
     }
 
-    public boolean isInvulnerable(){
-        return invulnerable;
-    }
 
     
 }

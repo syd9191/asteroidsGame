@@ -6,10 +6,9 @@ import java.awt.Graphics;
 public class Bullet{
     private int x,y;
     private double angle;
+    
     final int speed=12;
     final int size=3;
-
-
 
     public Bullet(int x, int y, double shipAngle){
         this.x=x;
@@ -44,9 +43,4 @@ public class Bullet{
 
     public int getX() { return x; }
     public int getY() { return y; }
-
-
-
-
-    
 }
